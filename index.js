@@ -1,14 +1,13 @@
 const express = require('express')
-const bodyParser = require('body-parser')
-
+const db = require("./db.js")
 
 const app = express()
 const port = 3000
 
-app.use(bodyParser.json())
+app.use(express.json())
 
 app.post('/', (req, res) => {
-  res.send('Hello World!')
+  res.send(req.body)
 })
 
 app.listen(port, () => {
