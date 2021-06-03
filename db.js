@@ -1,11 +1,6 @@
-var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database(':memory:');
+var sqlite3 = require('better-sqlite3').verbose();
+var db = new sqlite3.Database("./db.sqlite")
+db.run("CREATE TABLE IF NOT EXISTS books (id INTEGER PRIMARY KEY, title TEXT, description TEXT)");
 
-db.serialize(function() {
-  db.run("CREATE TABLE IF NOT EXISTS books (id INTEGER PRIMARY KEY, title TEXT, description TEXT)");
 
-});
-
-db.close();
-
-module.export = db
+module.exports = db
