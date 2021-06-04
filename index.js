@@ -6,9 +6,6 @@ const port = 3000
 
 app.use(express.json())
 
-app.post('/', (req, res) => {
-  res.send(req.body)
-})
 
 app.post('/new', (req, res) => {
   const { title, description } = req.body
@@ -17,7 +14,7 @@ app.post('/new', (req, res) => {
   res.json(info)
 })
 
-app.get('/', (_, res) => {
+app.get('/', (req, res) => {
   const statement = db.prepare('SELECT * from books')
   const books = statement.all()
   res.json(books)
