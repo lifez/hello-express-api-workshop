@@ -1,64 +1,75 @@
-const express = require('express')
-const db = require('./db')
+const express = require("express");
+const db = require("./db.js");
 
-const app = express()
-const port = 3000
+const app = express();
 
-app.use(express.json())
+app.use(express.json());
 
-app.get('/', (req, res) => {
-    const returnValue = {
-        "title": "Javascript Bonus",
-        "description": "lorem ipsum"
-    }
-    res.json(returnValue)
-})
+app.get("/", (request, response) => {
+  //   response.json({
+  //     title: "Good Code, Bad Code",
+  //     description: "Book from manning",
+  //   });
+  response.send("<h1>Hello</h1>");
+});
 
-app.get('/books', (req, res) => {
-    const statement = db.prepare('SELECT * from books')
-    const books = statement.all()
-    console.log(req.ip)
-    res.json(books)
-})
+app.post("/", (request, response) => {
+  //   const title = request.body.title;
+  //   const description = request.body.description;
+  const { title, description, publication } = request.body;
 
-app.get('/books/:id', (req, res) => {
-    const { id } = req.params
-    const statement = db.prepare(`SELECT * from books WHERE id = ${id}`)
-    const book = statement.get()
-    res.json(book)
-})
+  const statement = db.prepare(
+    "INSERT INTO books (title, description, publication) VALUES (?,?, ?)"
+  );
 
-app.patch('/books/:id', (req, res) => {
-    const { id } = req.params
-    const { description } = req.body
+  const info = statement.run(title, description, publication);
+  response.json(info);
+});
 
-    const statement = db.prepare('UPDATE books SET description = ? WHERE id = ?')
-    const info = statement.run(description, id)
+app.get("/books", (request, response) => {
+  const statement = db.prepare("SELECT * FROM books");
+  const info = statement.all();
+  response.json(info);
+});
 
-    res.json(info)
-})
+app.get("/books/:id", (request, response) => {
+  //   const id = request.params.id;
+  const { id } = request.params;
 
-app.delete('/books/:id', (req, res) => {
-    const { id } = req.params
+  const statement = db.prepare(`SELECT * FROM books WHERE id = ${id}`);
+  const info = statement.get();
 
-    const statement = db.prepare('DELETE from books WHERE id = ?')
-    const info = statement.run(id)
+  response.json(info);
+});
 
-    res.json(info)
-})
+app.get("/books/:title/:year", (request, response) => {
+  const { title, year } = request.params;
 
+  const statement = db.prepare(`SELECT * FROM books WHERE publication=${year}`);
 
-app.post('/new', (req, res) => {
-    // const title = req.body.title
-    // const description = req.body.description
+  const info = statement.all();
+  response.json(info);
+});
 
-    const {title, description} = req.body
-    const statement = db.prepare('INSERT INTO books (title, description) VALUES (?, ?)')
-    const info = statement.run(title, description)
-    res.json(info)
-})
+app.patch("/books/:id", (request, response) => {
+  const { id } = request.params;
+  const { title } = request.body;
 
-app.listen(port, () => {
-    console.log(`Application Start at http://localhost:${port}`)
-})
+  const statement = db.prepare("UPDATE books SET title = ? WHERE id = ?");
+  const info = statement.run(title, id);
 
+  response.json(info);
+});
+
+app.delete("/books/:id", (request, response) => {
+  const { id } = request.params;
+
+  const statement = db.prepare("DELETE from books WHERE id = ?");
+  const info = statement.run(id);
+
+  response.json(info);
+});
+
+app.listen(3000, () => {
+  console.log("Application start at http://localhost:3000");
+});

@@ -1,23 +1,6 @@
 {
-  "name": "hello-express-api",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/lifez/hello-express-api-workshop.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/lifez/hello-express-api-workshop/issues"
-  },
-  "homepage": "https://github.com/lifez/hello-express-api-workshop#readme",
   "dependencies": {
-    "better-sqlite3": "^7.4.0",
+    "better-sqlite3": "^7.4.3",
     "express": "^4.17.1"
   }
 }
