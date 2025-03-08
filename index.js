@@ -16,55 +16,47 @@ app.get("/", (request, response) => {
 app.post("/", (request, response) => {
   //   const title = request.body.title;
   //   const description = request.body.description;
-  const { title, description, publication } = request.body;
+  const { title, owner } = request.body;
 
   const statement = db.prepare(
-    "INSERT INTO books (title, description, publication) VALUES (?,?, ?)"
+    "INSERT INTO models (title, owner) VALUES (?,?)"
   );
 
   const info = statement.run(title, description, publication);
   response.json(info);
 });
 
-app.get("/books", (request, response) => {
-  const statement = db.prepare("SELECT * FROM books");
+app.get("/models", (request, response) => {
+  const statement = db.prepare("SELECT * FROM models");
   const info = statement.all();
   response.json(info);
 });
 
-app.get("/books/:id", (request, response) => {
+app.get("/models/:id", (request, response) => {
   //   const id = request.params.id;
   const { id } = request.params;
 
-  const statement = db.prepare(`SELECT * FROM books WHERE id = ${id}`);
+  const statement = db.prepare(`SELECT * FROM models WHERE id = ${id}`);
   const info = statement.get();
 
   response.json(info);
 });
 
-app.get("/books/:title/:year", (request, response) => {
-  const { title, year } = request.params;
 
-  const statement = db.prepare(`SELECT * FROM books WHERE publication=${year}`);
-
-  const info = statement.all();
-  response.json(info);
-});
-
-app.patch("/books/:id", (request, response) => {
+app.patch("/models/:id", (request, response) => {
   const { id } = request.params;
   const { title } = request.body;
 
-  const statement = db.prepare("UPDATE books SET title = ? WHERE id = ?");
+  const statement = db.prepare("UPDATE models SET title = ? WHERE id = ?");
   const info = statement.run(title, id);
 
   response.json(info);
 });
 
-app.delete("/books/:id", (request, response) => {
+app.delete("/models/:id", (request, response) => {
   const { id } = request.params;
 
-  const statement = db.prepare("DELETE from books WHERE id = ?");
+  const statement = db.prepare("DELETE from models WHERE id = ?");
   const info = statement.run(id);
 
   response.json(info);

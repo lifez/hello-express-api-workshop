@@ -1,9 +1,10 @@
-const Database = require("better-sqlite3");
+const { DatabaseSync } = require('node:sqlite');
 
-const db = new Database("book.sqlite");
+
+const db = new DatabaseSync('books.db');
 
 db.exec(
-  "CREATE TABLE IF NOT EXISTS books (id INTEGER PRIMARY KEY, title TEXT, description TEXT, publication INTEGER)"
+  "CREATE TABLE IF NOT EXISTS models (id INTEGER PRIMARY KEY, title TEXT, owner TEXT)"
 );
 
 module.exports = db;
